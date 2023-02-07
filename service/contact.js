@@ -1,7 +1,10 @@
-const Contact = require('./schemas/contact')
+const Contact = require('../models/contact')
 
-const getAllContacts = async () => {
-  return Contact.find()
+const getAllContacts = async (query) => {
+  const { limit = 1, page = 1 } = query
+  return Contact.find(query)
+    .limit(query.limit)
+    .skip(page > 1 ? page * limit : 0)
 }
 
 const getContactById = (id) => {
@@ -13,7 +16,6 @@ const createContact = ({ name, email, phone, favorite }) => {
 }
 
 const updateContact = (id, fields) => {
-  console.log(id, fields)
   return Contact.findByIdAndUpdate({ _id: id }, fields, { new: true })
 }
 
