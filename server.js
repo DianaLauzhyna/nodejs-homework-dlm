@@ -1,38 +1,11 @@
-const express = require('express')
-const logger = require('morgan')
-const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config()
+require('./config/passport-config.js')
 
-const PORT = process.env.PORT || 27017
+const app = require('./app')
+const PORT = process.env.PORT || 3000
 const uriDb = process.env.DL_HOST
 
-const routerApi = require('./routes/api/contacts')
-
-const app = express()
-
-const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
-
-app.use(logger(formatsLogger))
-app.use(
-  cors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  }),
-)
-app.use(express.json())
-
-app.use('/', routerApi)
-
-app.use((req, res) => {
-  res.status(404).json({ message: 'Not found' })
-})
-
-app.use((err, req, res, next) => {
-  res.status(500).json({ message: err.message })
-})
 mongoose.Promise = global.Promise
 
 const connection = mongoose.connect(uriDb, {
