@@ -6,7 +6,7 @@ const sendVerificationMail = (email, verificationToken) => {
   console.log(email);
   const msg = {
     //   to: email,
-    to: 'erjomin4ser@gmail.com',
+    to: email,
     from: process.env.MASTER_EMAIL,
     subject: 'Email verification',
     html: `<a href="http://localhost:3000/users/verify/${verificationToken.toString()}">verify email ${email}</a>`,
